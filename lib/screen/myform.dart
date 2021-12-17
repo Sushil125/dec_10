@@ -22,11 +22,7 @@ class _MyFormState extends State<MyForm> {
     super.dispose();
   }
 
-  String myvalidator(value) {
-    if (value == null || value.isEmpty) {
-      return "Field is empty";
-    }
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +45,12 @@ class _MyFormState extends State<MyForm> {
                     height: 30,
                   ),
                   TextFormField(
-                    validator: myvalidator,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Field is empty";
+                      }
+                      return null;
+                    },
                     controller: first,
                     style: TextStyle(
                       fontSize: 20,
