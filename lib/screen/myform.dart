@@ -26,7 +26,6 @@ class _MyFormState extends State<MyForm> {
     if (value == null || value.isEmpty) {
       return "Field is empty";
     }
-    
   }
 
   @override
@@ -50,12 +49,7 @@ class _MyFormState extends State<MyForm> {
                     height: 30,
                   ),
                   TextFormField(
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Field is empty";
-                      }
-                      return null;
-                    },
+                    validator: myvalidator,
                     controller: first,
                     style: TextStyle(
                       fontSize: 20,
