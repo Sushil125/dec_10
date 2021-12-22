@@ -1,8 +1,6 @@
-import 'package:dec_10/screen/classwork.dart';
-import 'package:dec_10/screen/mybutton.dart';
-import 'package:dec_10/screen/myform.dart';
-import 'package:dec_10/screen/mytext.dart';
-import 'package:dec_10/screen/stfl.dart';
+
+import 'package:dec_10/screen/new_form.dart';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -20,7 +18,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: MyForm(),
+      home: FormValidate(),
     );
   }
 }
