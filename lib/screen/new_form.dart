@@ -29,7 +29,7 @@ class _FormValidateState extends State<FormValidate> {
               children: [
                 const SizedBox(height: 10),
                 const CircleAvatar(
-                    backgroundImage: AssetImage('images/one1.jpg'), radius: 80),
+                    backgroundImage: AssetImage("images/one1.jpg"), radius: 80),
                 const SizedBox(height: 30),
                 TextFormField(
                   onSaved: (value) {
