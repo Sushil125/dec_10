@@ -1,68 +1,90 @@
 import 'package:flutter/material.dart';
-import 'package:form_field_validator/form_field_validator.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:motion_toast/motion_toast.dart';
 
-class FormValidate extends StatefulWidget {
-  const FormValidate({Key? key}) : super(key: key);
+class MyForm extends StatefulWidget {
+  const MyForm({Key? key}) : super(key: key);
 
   @override
-  _FormValidateState createState() => _FormValidateState();
+  _MyFormState createState() => _MyFormState();
 }
 
-class _FormValidateState extends State<FormValidate> {
+class _MyFormState extends State<MyForm> {
   final _formkey = GlobalKey<FormState>();
-  String email = '';
-  String pass = '';
+  final _firstController = TextEditingController();
+  final _secondController = TextEditingController();
+
+  String result = '';
+
+  String? myvalidation(value) {
+    if (value == null || value.isEmpty) {
+      return "Field is empty";
+    }
+    if (value.length < 6) {
+      return "less than 6 character";
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Form validation'),
-        ),
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.all(25),
+      backgroundColor: Colors.amber,
+      appBar: AppBar(
+        title: const Text('Form Example'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(25.0),
+        child: SingleChildScrollView(
           child: Form(
             key: _formkey,
             child: Column(
               children: [
-                const SizedBox(height: 10),
-                const CircleAvatar(
-                    backgroundImage: AssetImage("images/one1.jpg"), radius: 80),
+                const Text(
+                  'Adding two Numbers:',
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                ),
                 const SizedBox(height: 30),
                 TextFormField(
-                  onSaved: (value) {
-                    email = value!;
-                  },
-                  validator: MultiValidator([
-                    RequiredValidator(errorText: '* Required'),
-                    EmailValidator(errorText: 'Invalid email'),
-                  ]),
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
-                    hintText: 'enter your email',
-                    prefixIcon: Icon(Icons.email),
-                    border: OutlineInputBorder(),
+                 validator: myvalidation,
+                  controller: _firstController,
+                  keyboardType: TextInputType.number,
+                  cursorColor: Colors.red,
+                  style: const TextStyle(
+                      fontSize: 25, fontWeight: FontWeight.bold),
+                  decoration: InputDecoration(
+                    labelText: 'First Num',
+                    hintText: '0',
+                    border: const OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        _firstController.clear();
+                      },
+                      icon: const Icon(Icons.clear),
+                    ),
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 20),
                 TextFormField(
-                  onSaved: (value) {
-                    pass = value!;
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Field is empty";
+                    }
+                    return null;
                   },
-                  validator: MultiValidator([
-                    RequiredValidator(errorText: '* Required'),
-                    MinLengthValidator(6,
-                        errorText: 'should be at least 6 characters'),
-                    MaxLengthValidator(15,
-                        errorText: 'should be less than 15 characters'),
-                  ]),
-                  decoration: const InputDecoration(
-                    labelText: 'password',
-                    hintText: 'enter your password',
-                    prefixIcon: Icon(Icons.lock),
-                    border: OutlineInputBorder(),
+                  controller: _secondController,
+                  keyboardType: TextInputType.number,
+                  cursorColor: Colors.red,
+                  style: const TextStyle(
+                      fontSize: 25, fontWeight: FontWeight.bold),
+                  decoration: InputDecoration(
+                    labelText: 'Second Num',
+                    hintText: '0',
+                    border: const OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        _secondController.clear();
+                      },
+                      icon: const Icon(Icons.clear),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -72,29 +94,51 @@ class _FormValidateState extends State<FormValidate> {
                   ),
                   onPressed: () {
                     if (_formkey.currentState!.validate()) {
-                      _formkey.currentState!.save();
-                      MotionToast.success(
-                              description: 'Data saved successfully')
-                          .show(context);
+                      setState(() {
+                        result = ((int.parse(_firstController.text) +
+                                int.parse(_secondController.text))
+                            .toString());
+                      });
                     }
                   },
-                  child: const Text('Submit'),
+                  child: const Text('Sum'),
                 ),
-                const SizedBox(height: 10),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(double.infinity, 50),
-                  ),
-                  onPressed: () {
-                    _formkey.currentState!.reset();
-                    MotionToast.success(description: 'Data reset successfully')
-                        .show(context);
-                  },
-                  child: const Text('clear'),
-                ),
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        width: 150,
+                        height: 80,
+                        color: Colors.black,
+                        child: const Center(
+                          child: Text(
+                            'Result',
+                            style: TextStyle(fontSize: 30, color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        width: 150,
+                        height: 80,
+                        color: Colors.white,
+                        child: Center(
+                          child: Text(
+                            result,
+                            style: TextStyle(fontSize: 30, color: Colors.black),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
